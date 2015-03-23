@@ -3,7 +3,7 @@
 *.ko
 *.obj
 *.elf
-dll
+dlls
 obj
 
 # Precompiled Headers
