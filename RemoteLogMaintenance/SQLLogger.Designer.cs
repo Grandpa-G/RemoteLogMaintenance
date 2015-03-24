@@ -365,6 +365,7 @@
             // 
             // clearSearch
             // 
+            this.clearSearch.Image = global::RemoteLogMaintenance.Properties.Resources.clear_left;
             this.clearSearch.Location = new System.Drawing.Point(914, 198);
             this.clearSearch.Name = "clearSearch";
             this.clearSearch.Size = new System.Drawing.Size(25, 25);

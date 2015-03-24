@@ -14,6 +14,14 @@ namespace RemoteLogMaintenance
     public partial class SQLLogger : Form
     {
         RemoteUtils ru = new RemoteUtils();
+        private enum SqlType
+        {
+            Unknown,
+            Sqlite,
+            Mysql
+        }
+
+        private SqlType dbType;
         public SQLLogger()
         {
             InitializeComponent();
@@ -27,33 +35,10 @@ namespace RemoteLogMaintenance
             listStats.Items.Clear();
             dataListLog.Rows.Clear();
 
-            if (ru.getToken())
-            {
-                fillStats();
-                string limit = "";
-                if (txtRowLimit.Text.Length > 0)
-                {
-                    try
-                    {
-                        int number = Int32.Parse(txtRowLimit.Text);
-                        limit = " limit " + number;
-                    }
-                    catch (FormatException)
-                    {
-                        limit = "";
-                    }
-                    catch (OverflowException)
-                    {
-                        limit = "";
-                    }
-                }
-                fillLogList(" order by id desc" + limit);
-            }
-            dtStartSearch.CustomFormat = "MM/dd/yyyy HH:mm:ss";
+             dtStartSearch.CustomFormat = "MM/dd/yyyy HH:mm:ss";
             dtStartSearch.Format = DateTimePickerFormat.Custom;
             dtEndSearch.CustomFormat = "MM/dd/yyyy HH:mm:ss";
             dtEndSearch.Format = DateTimePickerFormat.Custom;
-
 
             toolTip.SetToolTip(txtSearchMessage, "Include text for fuzzy search (i.e. %xxxx%)");
             toolTip.SetToolTip(dtStartSearch, "Check box to include in search criteria.");
@@ -65,6 +50,10 @@ namespace RemoteLogMaintenance
  
             dtStartSearch.Checked = false;
             dtEndSearch.Checked = false;
+            if (ru.getToken())
+            {
+                refreshLog_Click(null, null);
+            }
         }
 
         private void fillStats()
@@ -72,7 +61,11 @@ namespace RemoteLogMaintenance
             listStats.Items.Clear();
             Stats logList = new Stats();
             logList = ru.getStats();
-            lblDatabaseSize.Text = "DB size " + logList.DBStats.DBSize.ToString() + " (MB)";
+            if (logList.DBStats.DBType.ToString().Equals("SQLite"))
+                dbType = SqlType.Sqlite;
+            else
+                dbType = SqlType.Mysql;
+            lblDatabaseSize.Text = "DB size " + logList.DBStats.DBSize.ToString() + " (MB) " + logList.DBStats.DBType.ToString();
             lblLogSize.Text = "Table size " + logList.DBStats.TableRows.ToString() + " rows, " + logList.DBStats.TableSize.ToString() + "(MB)";
             foreach (LogStat log in logList.LogStats)
             {
@@ -119,7 +112,8 @@ namespace RemoteLogMaintenance
 
         private void refreshLog_Click(object sender, EventArgs e)
         {
-            fillLogList("");
+            searchLog_Click(null, null);
+            fillStats();
         }
 
         private void chkSelectAll_CheckedChanged(object sender, EventArgs e)
@@ -137,6 +131,8 @@ namespace RemoteLogMaintenance
             txtSearchMessage.Text = "";
             dtStartSearch.Text = "03/1/2015 00:00:00";
             dtEndSearch.Text = "01/1/2018 00:00:00";
+            dtStartSearch.Checked = false;
+            dtEndSearch.Checked = false;
         }
 
         private void searchLog_Click(object sender, EventArgs e)
@@ -153,12 +149,18 @@ namespace RemoteLogMaintenance
 
             if (dtStartSearch.Checked)
             {
+                if(dbType == SqlType.Mysql)
                 whereClause = whereClause + and + " timestamp>= STR_TO_DATE('" + dtStartSearch.Text + "','%m/%d/%Y %H:%i:%s')";
+                else
+                    whereClause = whereClause + and + " timestamp>= '" + returnDate(dtStartSearch.Text) + "'";
                 and = " and ";
             }
             if (dtEndSearch.Checked)
             {
-                whereClause = whereClause + and + " timestamp<= STR_TO_DATE('" + dtEndSearch.Text + "','%m/%d/%Y %H:%i:%s')";
+                if (dbType == SqlType.Mysql)
+                    whereClause = whereClause + and + " timestamp<= STR_TO_DATE('" + dtEndSearch.Text + "','%m/%d/%Y %H:%i:%s')";
+                else
+                    whereClause = whereClause + and + " timestamp<= '" + returnDate(dtEndSearch.Text) + "'";
                 and = " and ";
             }
             if (txtRowLimit.Text.Length > 0)
@@ -181,7 +183,14 @@ namespace RemoteLogMaintenance
             fillLogList(whereClause);
         }
 
+        private string returnDate(string date)
+        {
+            string newDate = "";
 
+            if(date.Length > 0)
+            newDate = date.Substring(6, 4) + "-" + date.Substring(0, 2) + "-" + date.Substring(3, 2) + " " + date.Substring(11);
+            return newDate;
+        }
         private void dtStartSearch_ValueChanged(object sender, EventArgs e)
         {
 
