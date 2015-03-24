@@ -1,7 +1,7 @@
 # RemoteLogMaintenance
 ###Manages TShock Sever MySQL logs
 
-Remote Log manager is a GUI tool to manage a TShock log data set when configured to use MySQL as the logging source. The option usemysqllogging must be set to true to be able to use this command. If MySQL is not used as the database, then the command will exit immediately. 
+Remote Log manager is a GUI tool to manage a TShock log data set when configured to use MySQL as the logging source. The option usemysqllogging must be set to true to be able to use this command.
 
 The Remote Log Manager is invoked by issuing the clicking on the windows executable file name RemoteLogMaintenance.exe
 
@@ -30,6 +30,8 @@ The installation of the Remote Log Maintenance program requires several steps.
 First, the file SQLLoggerRest.dll must be placed in the TShock Server Plugins folder. A restart of the server will be required to load the dll.
 
 Second, the files RemoteLogMaintenance.exe and Newtonsoft.Json.dll must be placed together in any location desired.
+
+Third, ensure that the option usemysqllogging is set to true in the config.json file in the tshock folder on the server.
 
 When the tool is first started, click on the Settings button near the top left to enter valid credentials to access the server via the RestAPI protocol. The RESTAPI funtionality must be turned on through the use of a configuration option. 
 
