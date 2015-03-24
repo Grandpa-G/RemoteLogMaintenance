@@ -51,12 +51,14 @@ namespace RemoteLogMaintenance
         public double DBSize { get; set; }
         public int TableRows { get; set; }
         public double TableSize { get; set; }
+        public string Version { get; set; }
 
-        public DatabaseStat(double dbSize, int tableRows, double tableSize)
+        public DatabaseStat(double dbSize, int tableRows, double tableSize, string version)
         {
             DBSize = dbSize;
             TableRows = tableRows;
             TableSize = tableSize;
+            Version = version;
         }
 
         public DatabaseStat()
@@ -64,6 +66,7 @@ namespace RemoteLogMaintenance
             DBSize = 0;
             TableRows = 0;
             TableSize = 0;
+            Version = "";
         }
     }
     

@@ -100,7 +100,7 @@ namespace RemoteLogMaintenance
                 // this can be a string or array, how can we tell which it is
                 JToken dbStats = results["Stats"];
 
-                ds = new DatabaseStat((double)dbStats["DBSize"], (int)dbStats["TableRows"], (double)dbStats["TableSize"]);
+                ds = new DatabaseStat((double)dbStats["DBSize"], (int)dbStats["TableRows"], (double)dbStats["TableSize"], (string)results["version"]);
 
                 // this can be a string or array, how can we tell which it is
                 JToken rows = results["Rows"];

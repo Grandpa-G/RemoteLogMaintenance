@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SQLLogger));
             this.dataListLog = new System.Windows.Forms.DataGridView();
             this.dataSelectRow = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dataID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,6 +66,7 @@
             this.clearSearch = new System.Windows.Forms.Button();
             this.refreshLog = new System.Windows.Forms.Button();
             this.lblVersion = new System.Windows.Forms.Label();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataListLog)).BeginInit();
             this.SuspendLayout();
             // 
@@ -108,8 +111,8 @@
             // 
             // dataLogLevel
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.dataLogLevel.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.dataLogLevel.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataLogLevel.HeaderText = "Level";
             this.dataLogLevel.Name = "dataLogLevel";
             this.dataLogLevel.ReadOnly = true;
@@ -420,7 +423,9 @@
             this.Controls.Add(this.refreshLog);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataListLog);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SQLLogger";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Manage MySql Logs";
             ((System.ComponentModel.ISupportInitialize)(this.dataListLog)).EndInit();
             this.ResumeLayout(false);
@@ -465,6 +470,7 @@
         private System.Windows.Forms.Button btnSaveAndDelete;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
 

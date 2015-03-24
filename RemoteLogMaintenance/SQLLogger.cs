@@ -30,14 +30,39 @@ namespace RemoteLogMaintenance
             if (ru.getToken())
             {
                 fillStats();
-
-                fillLogList(" order by id desc");
+                string limit = "";
+                if (txtRowLimit.Text.Length > 0)
+                {
+                    try
+                    {
+                        int number = Int32.Parse(txtRowLimit.Text);
+                        limit = " limit " + number;
+                    }
+                    catch (FormatException)
+                    {
+                        limit = "";
+                    }
+                    catch (OverflowException)
+                    {
+                        limit = "";
+                    }
+                }
+                fillLogList(" order by id desc" + limit);
             }
             dtStartSearch.CustomFormat = "MM/dd/yyyy HH:mm:ss";
             dtStartSearch.Format = DateTimePickerFormat.Custom;
             dtEndSearch.CustomFormat = "MM/dd/yyyy HH:mm:ss";
             dtEndSearch.Format = DateTimePickerFormat.Custom;
 
+
+            toolTip.SetToolTip(txtSearchMessage, "Include text for fuzzy search (i.e. %xxxx%)");
+            toolTip.SetToolTip(dtStartSearch, "Check box to include in search criteria.");
+            toolTip.SetToolTip(dtEndSearch, "Check box to include in search criteria.");
+            toolTip.SetToolTip(txtRowLimit, "Enter number of rows to limit criteria or refresh.");
+
+            toolTip.SetToolTip(searchLog, "Start Search");
+            toolTip.SetToolTip(clearSearch, "Resets search criteria.");
+ 
             dtStartSearch.Checked = false;
             dtEndSearch.Checked = false;
         }
@@ -57,6 +82,7 @@ namespace RemoteLogMaintenance
 
                 listStats.Items.Add(item);
             }
+            lblVersion.Text = lblVersion.Text + " [dll version " + logList.DBStats.Version + "]";
         }
         private void fillLogList(string searchClause)
         {
