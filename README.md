@@ -1,7 +1,7 @@
 # RemoteLogMaintenance
 ###Manages TShock Sever MySQL logs
 
-Remote Log manager is a GUI tool to manage a TShock log data set when configured to use MySQL as the logging source. The option usemysqllogging must be set to true to be able to use this command. If MySQL is not used as the database, then the command will exit immediately. 
+Remote Log manager is a GUI tool to manage a TShock log data set when configured to use MySQL as the logging source. The option UseSqlLogs must be set to true to be able to use this command. If MySQL is not used as the database, then the command will exit immediately. 
 
 The Remote Log Manager is invoked by issuing the clicking on the windows executable file name RemoteLogMaintenance.exe
 
