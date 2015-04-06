@@ -13,6 +13,8 @@ namespace RemoteLogMaintenance
 {
     public partial class SQLLogger : Form
     {
+        public static bool DEBUG = false;
+
         RemoteUtils ru = new RemoteUtils();
         private enum SqlType
         {
@@ -26,6 +28,15 @@ namespace RemoteLogMaintenance
         {
             InitializeComponent();
             lblVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            string[] args = Environment.GetCommandLineArgs();
+            foreach (string arg in args)
+            {
+                if (arg.Length > 0 && arg.Equals("-d"))
+                {
+                    DEBUG = true;
+                    Console.WriteLine("Debug Mode On.");
+                }
+            }
 
             restoreSettings();
             startLog();
@@ -280,6 +291,17 @@ namespace RemoteLogMaintenance
             exampleRegistryKey.SetValue("Password", ru.conn.Password);
             exampleRegistryKey.SetValue("Server", ru.conn.Server);
             exampleRegistryKey.Close();
+        }
+        private void clearSettings()
+        {
+            Microsoft.Win32.RegistryKey exampleRegistryKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("RemoteLogMaintenance");
+            exampleRegistryKey.SetValue("UserId", "");
+            exampleRegistryKey.SetValue("Password", "");
+            exampleRegistryKey.SetValue("Server", "");
+            exampleRegistryKey.Close();
+            ru.conn.UserId = "";
+            ru.conn.Password = "";
+            ru.conn.Server = "";
         }
         private void restoreSettings()
         {

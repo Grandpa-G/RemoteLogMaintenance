@@ -38,6 +38,9 @@ namespace RemoteLogMaintenance
         {
             try
             {
+                if(SQLLogger.DEBUG)
+                    Console.WriteLine(url);
+
                 HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
@@ -51,6 +54,8 @@ namespace RemoteLogMaintenance
                     StreamReader reader = new StreamReader(dataStream);
                     // Read the content.
                     string responseFromServer = reader.ReadToEnd();
+                    if (SQLLogger.DEBUG)
+                        Console.WriteLine(responseFromServer);
                     // Parse JSON into dynamic object, convenient!
                     JObject results = JObject.Parse(responseFromServer);
                     response.Close();

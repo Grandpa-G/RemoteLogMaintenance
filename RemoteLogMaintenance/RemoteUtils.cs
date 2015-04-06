@@ -14,7 +14,7 @@ namespace RemoteLogMaintenance
     class RemoteUtils
     {
         public Connecton conn;
-
+ 
         public RemoteUtils()
         {
             conn = new Connecton();
@@ -118,7 +118,7 @@ namespace RemoteLogMaintenance
             }
             else
             {
-                MessageBox.Show("MySQL Log database not correctly setup.\r\nMake sure you are using MySQL (not SQLite)\r\nDo you have UseSqlLogs set to true?", "Remote Log Maintenance", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("SQL Log database not correctly setup.\r\nDo you have UseSqlLogs set to true?", "Remote Log Maintenance", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 if (System.Windows.Forms.Application.MessageLoop)
                 {
                     // WinForms app
